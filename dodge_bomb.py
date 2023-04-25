@@ -45,7 +45,7 @@ def main():
     pg.draw.circle(draw_sfc, ( 255,0,0), (10,10), 10)
     draw_sfc.set_colorkey((0,0,0))
     x,y = random.randint(0,width),random.randint(0,height)
-    bb_pos = type("bb_pos",(),{"x":random.randint(0,width),"y":random.randint(0,height),"vx":1,"vy":1,"size":1})
+    bb_pos = type("bb_pos",(),{"x":random.randint(0,width),"y":random.randint(0,height),"vx":2,"vy":2,"size":1})
     screen.blit(draw_sfc,[bb_pos.x,bb_pos.y])
     bb_rect = draw_sfc.get_rect()
     bb_rect.centerx,bb_rect.centery = x,y
@@ -71,18 +71,26 @@ def main():
                 roted_kk_img = pg.transform.flip(roted_kk_img,True,False)
             screen.blit(roted_kk_img, [kk_rect.left, kk_rect.top])            
         #bb
-        
+        #size = min((10+ tmr)/10+20 ,200)
+        #hit_bb_rect = pg.transform.scale(draw_sfc,(size,size)).get_rect()
         bb_rect.move_ip(bb_pos.vx,bb_pos.vy)
         if check_bound(screen.get_rect(),bb_rect) == (False,True):
             bb_rect.move_ip(-bb_pos.vx,-bb_pos.vy)
-            bb_pos.vx *= -1
-        if check_bound(screen.get_rect(),bb_rect) == (True,False):
+            
+            bb_pos.vx *= -1.1
+        elif check_bound(screen.get_rect(),bb_rect) == (True,False):
             bb_rect.move_ip(-bb_pos.vx,-bb_pos.vy)
-            bb_pos.vy *= -1
-        if check_bound(screen.get_rect(),bb_rect) == (False,False):
+            bb_pos.vy *= -1.1
+        elif check_bound(screen.get_rect(),bb_rect) == (False,False):
             bb_rect.move_ip(-bb_pos.vx,-bb_pos.vy)
-            bb_pos.vx *= -1
-            bb_pos.vy *= -1
+            bb_pos.vx *= -1.1
+            bb_pos.vy *= -1.1
+        #print(bb_pos.vx,bb_pos.vy)
+        if abs(bb_pos.vx) > 20:
+            #print("out")
+            bb_pos.vx *= (10/11)
+        if abs(bb_pos.vy) > 20:
+            bb_pos.vy *= (10/11)
 
 
         size = min((10+ tmr)/10+20 ,200)
