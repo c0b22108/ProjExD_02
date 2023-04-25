@@ -3,6 +3,21 @@ import pygame as pg
 
 import sys
 
+def check_bound(scr_rect:pg.Rect,obj_rect:pg.Rect):
+    """
+    if obj in scr:
+        return (x,y)
+    x,y == True or False
+    in -> True
+    out -> False
+    """
+    x,y = False,False
+    if scr_rect.top < obj_rect.top and scr_rect.bottom > obj_rect.bottom:
+        y = True
+    if scr_rect.left < obj_rect.left and scr_rect.right > obj_rect.right:
+        x = True
+    return (x,y) 
+
 def main():
     width,height = 1600, 900
     pg.display.set_caption("逃げろ！こうかとん")
@@ -43,12 +58,36 @@ def main():
         for v,item in key_list.items():
             if key_lst[v]:
                 kk_rect.move_ip(item[0],item[1])
-        screen.blit(bg_img, [0, 0])
-        screen.blit(kk_img, [kk_rect.centerx, kk_rect.centery]) 
-        screen.blit(draw_sfc,[bb_rect.x,bb_rect.y])
+                if check_bound(screen.get_rect(),kk_rect) != (True,True):
+                    kk_rect.move_ip(-item[0],-item[1])
         bb_rect.move_ip(bb_pos.vx,bb_pos.vy)
+        if check_bound(screen.get_rect(),bb_rect) == (False,True):
+            bb_rect.move_ip(-bb_pos.vx,-bb_pos.vy)
+            bb_pos.vx *= -1
+        if check_bound(screen.get_rect(),bb_rect) == (True,False):
+            bb_rect.move_ip(-bb_pos.vx,-bb_pos.vy)
+            bb_pos.vy *= -1
+        if check_bound(screen.get_rect(),bb_rect) == (False,False):
+            bb_rect.move_ip(-bb_pos.vx,-bb_pos.vy)
+            bb_pos.vx *= -1
+            bb_pos.vy *= -1
+
+
+        
+
+        #hit player bb
+        if check_bound(kk_rect,bb_rect) == (True,True):
+            return 
+
+            
+
+        screen.blit(bg_img, [0, 0])
+        screen.blit(kk_img, [kk_rect.left, kk_rect.top]) 
+        screen.blit(draw_sfc,[bb_rect.x,bb_rect.y])
         pg.display.update()
         clock.tick(1000)
+
+
 
 
 if __name__ == "__main__":
