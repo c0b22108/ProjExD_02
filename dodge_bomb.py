@@ -71,6 +71,7 @@ def main():
                 roted_kk_img = pg.transform.flip(roted_kk_img,True,False)
             screen.blit(roted_kk_img, [kk_rect.left, kk_rect.top])            
         #bb
+        
         bb_rect.move_ip(bb_pos.vx,bb_pos.vy)
         if check_bound(screen.get_rect(),bb_rect) == (False,True):
             bb_rect.move_ip(-bb_pos.vx,-bb_pos.vy)
@@ -86,7 +87,7 @@ def main():
 
         size = min((10+ tmr)/10+20 ,200)
         screen.blit(pg.transform.scale(draw_sfc,(size,size)),[bb_rect.x,bb_rect.y])
-        text2 = font1.render(f"time:{tmr}s", True, (200,100,100))
+        text2 = font1.render(f"time:{tmr/100}s", True, (200,100,100))
         screen.blit(text2,(100,100))
         pg.display.update()
         clock.tick(1000)
