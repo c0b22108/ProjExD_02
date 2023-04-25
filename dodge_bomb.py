@@ -11,13 +11,26 @@ def main():
     bg_img = pg.image.load("../ex02/fig/pg_bg.jpg")
     kk_img = pg.image.load("../ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
-    tmr = 0 
+    kk_rect = kk_img.get_rect()
+    kk_rect.centerx,kk_rect.centery = 900,400
+    tmr = 0
+
+    key_list = {
+            pg.K_UP:(0,-1),
+            pg.K_DOWN:(0,1),
+            pg.K_LEFT:(-1,0),
+            pg.K_RIGHT:(1,0)
+    }
+
+
     draw_sfc = pg.Surface((20,20))
     pg.draw.circle(draw_sfc, ( 255,0,0), (10,10), 10)
     draw_sfc.set_colorkey((0,0,0))
     x,y = random.randint(0,width),random.randint(0,height)
     bb_pos = type("bb_pos",(),{"x":random.randint(0,width),"y":random.randint(0,height),"vx":1,"vy":1})
     screen.blit(draw_sfc,[bb_pos.x,bb_pos.y])
+    bb_rect = draw_sfc.get_rect()
+    bb_rect.centerx,bb_rect.centery = x,y
     while True:
    
         for event in pg.event.get():
@@ -25,10 +38,15 @@ def main():
                 return 0
 
         tmr += 1
+        
+        key_lst = pg.key.get_pressed()
+        for v,item in key_list.items():
+            if key_lst[v]:
+                kk_rect.move_ip(item[0],item[1])
         screen.blit(bg_img, [0, 0])
-        screen.blit(kk_img, [900, 400]) 
-        screen.blit(draw_sfc,[bb_pos.x,bb_pos.y])
-
+        screen.blit(kk_img, [kk_rect.centerx, kk_rect.centery]) 
+        screen.blit(draw_sfc,[bb_rect.x,bb_rect.y])
+        bb_rect.move_ip(bb_pos.vx,bb_pos.vy)
         pg.display.update()
         clock.tick(1000)
 
