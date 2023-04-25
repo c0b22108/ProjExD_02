@@ -87,7 +87,9 @@ def main():
         size = min((10+ tmr)/10+20 ,200)
         screen.blit(pg.transform.scale(draw_sfc,(size,size)),[bb_rect.x,bb_rect.y])
         pg.display.update()
+        text1 = font1.render(f"{tmr}", True, (255,0,0))
         clock.tick(1000)
+
 
         #hit player bb
         if check_bound(kk_rect,bb_rect) == (True,True):
