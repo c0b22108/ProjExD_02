@@ -37,8 +37,7 @@ def main():
             pg.K_LEFT:(-1,0),
             pg.K_RIGHT:(1,0)
     }
-    #print(pg.font.get_fonts())
-    #char init
+    # char init
     font1 = pg.font.SysFont("liberationsansnarrow", 150)
     text1 = font1.render("GAME OVER", True, (255,0,0))
     draw_sfc = pg.Surface((20,20))
@@ -56,7 +55,7 @@ def main():
                 return 0
 
         tmr += 1
-        #kk        
+        # kk        
         kk_move_init = (kk_rect.centerx,kk_rect.centery)
         key_lst = pg.key.get_pressed()
         for v,item in key_list.items():
@@ -70,9 +69,9 @@ def main():
             if kk_move_touple[0] == 1:
                 roted_kk_img = pg.transform.flip(roted_kk_img,True,False)
             screen.blit(roted_kk_img, [kk_rect.left, kk_rect.top])            
-        #bb
-        #size = min((10+ tmr)/10+20 ,200)
-        #hit_bb_rect = pg.transform.scale(draw_sfc,(size,size)).get_rect()
+        # bb
+        # size = min((10+ tmr)/10+20 ,200)
+        # hit_bb_rect = pg.transform.scale(draw_sfc,(size,size)).get_rect()
         bb_rect.move_ip(bb_pos.vx,bb_pos.vy)
         if check_bound(screen.get_rect(),bb_rect) == (False,True):
             bb_rect.move_ip(-bb_pos.vx,-bb_pos.vy)
@@ -85,13 +84,11 @@ def main():
             bb_rect.move_ip(-bb_pos.vx,-bb_pos.vy)
             bb_pos.vx *= -1.1
             bb_pos.vy *= -1.1
-        #print(bb_pos.vx,bb_pos.vy)
+        
         if abs(bb_pos.vx) > 20:
-            #print("out")
             bb_pos.vx *= (10/11)
         if abs(bb_pos.vy) > 20:
             bb_pos.vy *= (10/11)
-
 
         size = min((10+ tmr)/10+20 ,200)
         screen.blit(pg.transform.scale(draw_sfc,(size,size)),[bb_rect.x,bb_rect.y])
@@ -100,8 +97,7 @@ def main():
         pg.display.update()
         clock.tick(1000)
 
-
-        #hit player bb
+        # hit player bb
         if check_bound(kk_rect,bb_rect) == (True,True):
             screen.blit(text1,(screen.get_rect().centerx,screen.get_rect().centery))
             pg.display.update()
