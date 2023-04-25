@@ -1,4 +1,5 @@
 import random
+import math
 import pygame as pg
 
 import sys
@@ -47,19 +48,27 @@ def main():
     bb_rect = draw_sfc.get_rect()
     bb_rect.centerx,bb_rect.centery = x,y
     while True:
-   
+        screen.blit(bg_img, [0, 0])
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return 0
 
         tmr += 1
-        
+        #kk        
+        kk_move_init = (kk_rect.centerx,kk_rect.centery)
         key_lst = pg.key.get_pressed()
         for v,item in key_list.items():
             if key_lst[v]:
                 kk_rect.move_ip(item[0],item[1])
                 if check_bound(screen.get_rect(),kk_rect) != (True,True):
                     kk_rect.move_ip(-item[0],-item[1])
+        else:
+            kk_move_touple = (kk_rect.centerx - kk_move_init[0],kk_rect.centery - kk_move_init[1])
+            roted_kk_img = pg.transform.rotozoom(kk_img, math.degrees(math.asin(kk_move_touple[1] ) ), 1.0)
+            if kk_move_touple[0] == 1:
+                roted_kk_img = pg.transform.flip(roted_kk_img,True,False)
+            screen.blit(roted_kk_img, [kk_rect.left, kk_rect.top])            
+        #bb
         bb_rect.move_ip(bb_pos.vx,bb_pos.vy)
         if check_bound(screen.get_rect(),bb_rect) == (False,True):
             bb_rect.move_ip(-bb_pos.vx,-bb_pos.vy)
@@ -81,8 +90,6 @@ def main():
 
             
 
-        screen.blit(bg_img, [0, 0])
-        screen.blit(kk_img, [kk_rect.left, kk_rect.top]) 
         screen.blit(draw_sfc,[bb_rect.x,bb_rect.y])
         pg.display.update()
         clock.tick(1000)
