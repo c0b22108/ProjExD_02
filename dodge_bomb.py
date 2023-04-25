@@ -37,13 +37,15 @@ def main():
             pg.K_LEFT:(-1,0),
             pg.K_RIGHT:(1,0)
     }
-
-
+    #print(pg.font.get_fonts())
+    #char init
+    font1 = pg.font.SysFont("liberationsansnarrow", 150)
+    text1 = font1.render("GAME OVER", True, (255,0,0))
     draw_sfc = pg.Surface((20,20))
     pg.draw.circle(draw_sfc, ( 255,0,0), (10,10), 10)
     draw_sfc.set_colorkey((0,0,0))
     x,y = random.randint(0,width),random.randint(0,height)
-    bb_pos = type("bb_pos",(),{"x":random.randint(0,width),"y":random.randint(0,height),"vx":1,"vy":1})
+    bb_pos = type("bb_pos",(),{"x":random.randint(0,width),"y":random.randint(0,height),"vx":1,"vy":1,"size":1})
     screen.blit(draw_sfc,[bb_pos.x,bb_pos.y])
     bb_rect = draw_sfc.get_rect()
     bb_rect.centerx,bb_rect.centery = x,y
@@ -64,7 +66,7 @@ def main():
                     kk_rect.move_ip(-item[0],-item[1])
         else:
             kk_move_touple = (kk_rect.centerx - kk_move_init[0],kk_rect.centery - kk_move_init[1])
-            roted_kk_img = pg.transform.rotozoom(kk_img, math.degrees(math.asin(kk_move_touple[1] ) ), 1.0)
+            roted_kk_img = pg.transform.rotozoom(kk_img, math.degrees(math.asin(kk_move_touple[1]) ), 1.0)
             if kk_move_touple[0] == 1:
                 roted_kk_img = pg.transform.flip(roted_kk_img,True,False)
             screen.blit(roted_kk_img, [kk_rect.left, kk_rect.top])            
@@ -82,18 +84,18 @@ def main():
             bb_pos.vy *= -1
 
 
-        
-
-        #hit player bb
-        if check_bound(kk_rect,bb_rect) == (True,True):
-            return 
-
-            
-
-        screen.blit(draw_sfc,[bb_rect.x,bb_rect.y])
+        size = min((10+ tmr)/10+20 ,200)
+        screen.blit(pg.transform.scale(draw_sfc,(size,size)),[bb_rect.x,bb_rect.y])
         pg.display.update()
         clock.tick(1000)
 
+        #hit player bb
+        if check_bound(kk_rect,bb_rect) == (True,True):
+            screen.blit(text1,(screen.get_rect().centerx,screen.get_rect().centery))
+            pg.display.update()
+            clock.tick(0.5)
+
+            return
 
 
 
