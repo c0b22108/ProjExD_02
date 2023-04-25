@@ -86,8 +86,9 @@ def main():
 
         size = min((10+ tmr)/10+20 ,200)
         screen.blit(pg.transform.scale(draw_sfc,(size,size)),[bb_rect.x,bb_rect.y])
+        text2 = font1.render(f"time:{tmr}s", True, (200,100,100))
+        screen.blit(text2,(100,100))
         pg.display.update()
-        text1 = font1.render(f"{tmr}", True, (255,0,0))
         clock.tick(1000)
 
 
